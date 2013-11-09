@@ -92,6 +92,8 @@ final:
 	 */
 	void setRow(ubyte row) {
 		this._row = row;
+
+		super._update = true;
 	}
 	
 	/**

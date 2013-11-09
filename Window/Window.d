@@ -108,13 +108,15 @@ private:
 	
 	Window.Style _style;
 	VideoMode _videoMode;
-	
-	string _title;
+
 	ubyte _fpsLimit;
-	
+	bool _needRedraw = true;
 	static int _winCount;
+	string _title;
 	
 public:
+final:
+
 	/**
 	 * CTor
 	 */
@@ -375,9 +377,12 @@ public:
 	/**
 	 * Draw a drawable object on screen.
 	 */
-	void draw(Drawable draw) const in {
+	void draw(Drawable draw)/* const*/ in {
 		assert(draw !is null, "Drawable object is null.");
 	} body {
+		if (draw.needRedraw())
+			this._needRedraw = true;
+
 		draw.render();
 	}
 	
@@ -393,6 +398,11 @@ public:
 	 * If the framerate limit is not 0, it waits for (1000 / framerate limit) milliseconds.
 	 */
 	void display() {
+		if (!this._needRedraw)
+			return;
+
+		this._needRedraw = false;
+
 		if (!this.isOpen())
 			return;
 		

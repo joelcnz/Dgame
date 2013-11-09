@@ -440,6 +440,8 @@ void main() {
 
 		wnd.clear();
 
+		//writefln("Current Fps: %d <=> %d", myclock.getCurrentFps(), wnd.getFpsLimit());
+
 		text.format("Current Fps: %d <=> %d", myclock.getCurrentFps(), wnd.getFpsLimit());
 		wnd.draw(text);
 
@@ -478,10 +480,7 @@ void main() {
 		tof.slide();
 		wnd.draw(tof);
 
-		
-
 		//qs.move(1, 1);
-	Ldisplay:
 		wnd.display();
 
 		//SDL_Delay(20);

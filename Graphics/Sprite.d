@@ -40,7 +40,6 @@ private {
 class Sprite : Transformable, Drawable {
 protected:
 	Texture _tex;
-	
 	ShortRect _clipRect;
 	ShortRect _texView;
 
@@ -50,16 +49,16 @@ private:
 	}
 	
 protected:
-	void _render() const in {
+	void _render() in {
 		assert(this._tex !is null, "Sprite couldn't rendered, because the Texture is null.");
 	} body {
 		glPushMatrix();
 		scope(exit) glPopMatrix();
 
 		this._applyTranslation();
+		this._tex._render(Render(&this._clipRect, this._texView.isEmpty() ? null : &this._texView));
 
-		this._tex._render(Render(&this._clipRect,
-								 this._texView.isEmpty() ? null : &this._texView));
+		super._update = false;
 	}
 	
 public:
@@ -75,6 +74,10 @@ public:
 	 */
 	this(Texture tex) {
 		this.setTexture(tex);
+	}
+
+	bool needRedraw() const pure nothrow {
+		return super._update;
 	}
 	
 	/**

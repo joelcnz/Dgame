@@ -45,11 +45,16 @@ public import Dgame.System.VertexRenderer : Primitive;
 */
 class VertexArray : Drawable {
 protected:
+	bool _update = true;
+
 	override void _render() in {
 		assert(this._tex !is null);
 	} body {
-		if (this._vertices.length == 0)
+		if (this._vertices.length == 0) {
+			this._update = false;
+
 			return;
+		}
 
 		if (this._tex !is null && !glIsEnabled(GL_TEXTURE_2D))
 			glEnable(GL_TEXTURE_2D);
@@ -73,7 +78,9 @@ protected:
 		if (this._indices.length == 0)
 			VertexRenderer.drawArrays(this._type, this._vertices.length);
 		else
-			VertexRenderer.drawElements(this._type, this._vertices.length, this._indices);	
+			VertexRenderer.drawElements(this._type, this._vertices.length, this._indices);
+
+		this._update = false;
 	}
 
 private:
@@ -112,12 +119,18 @@ final:
 		this._type = type;
 	}
 
+	bool needRedraw() const pure nothrow {
+		return this._update;
+	}
+
 	/**
 	* Set new indices. This state the order in which the vertices are drawn.
 	* Per default this should be 0, 1, 2, 3, ...
 	*/
 	void setIndices(uint[] indices) {
 		this._indices = indices;
+
+		this._update = true;
 	}
 
 	/**
@@ -164,6 +177,8 @@ final:
 	*/
 	void setType(Primitive.Type type) {
 		this._type = type;
+
+		this._update = true;
 	}
 
 	/**
@@ -201,6 +216,8 @@ final:
 	*/
 	void appendVertex(ref const Vertex vec) {
 		this._vertices ~= vec;
+
+		this._update = true;
 	}
 
 	/**
@@ -245,6 +262,8 @@ final:
 	*/
 	void resetVertices() {
 		this._vertices = null;
+
+		this._update = true;
 	}
 
 	/**
@@ -254,6 +273,8 @@ final:
 		foreach (ref Vertex vec; this._vertices) {
 			vec.setColor(col);
 		}
+
+		this._update = true;
 	}
 
 	/**

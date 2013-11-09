@@ -234,7 +234,6 @@ private:
 		}
 		
 		this._vao.bind();
-		
 		this._updateVertexCache();
 		
 		this._vbo.pointTo(Primitive.Target.Vertex, Pixel.sizeof);
@@ -308,6 +307,10 @@ final:
 	 */
 	~this() {
 		this._pixels = null;
+	}
+
+	bool needRedraw() const pure nothrow {
+		return this._update;
 	}
 	
 	/**

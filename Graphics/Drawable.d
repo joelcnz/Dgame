@@ -36,6 +36,8 @@ protected:
 	void _render();
 	
 public: // TODO: package?
+	bool needRedraw() const pure nothrow;
+
 	final void render() {
 		this._render();
 	}

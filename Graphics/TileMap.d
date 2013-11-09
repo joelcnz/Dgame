@@ -422,6 +422,8 @@ protected:
 		
 		this._vbo.disableAllStates();
 		this._vbo.unbind();
+
+		this._update = false;
 	}
 	
 private:
@@ -433,6 +435,7 @@ private:
 	
 	string _filename;
 	bool _doCompress;
+	bool _update = true;
 	
 	VertexBufferObject _vbo;
 	
@@ -452,6 +455,10 @@ final:
 		this._transform = new Transform();
 
 		this.load(filename, compress);
+	}
+
+	bool needRedraw() const pure nothrow {
+		return this._update;
 	}
 	
 	/**
@@ -477,6 +484,7 @@ final:
 
 		this._filename = filename;
 		this._doCompress = compress;
+		this._update = true;
 		
 		this._vbo.depleteAll();
 		
@@ -655,6 +663,8 @@ final:
 	void exchangeTileset(Texture tex) {
 		this._tex = null;
 		this._tex = tex;
+
+		this._update = true;
 	}
 	
 	/**
@@ -736,6 +746,8 @@ final:
 			
 			this._tiles[index] = newTile;
 		}
+
+		this._update = true;
 	}
 	
 	/**

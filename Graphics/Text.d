@@ -67,7 +67,7 @@ static ~this() {
 class Text : Transformable, Blendable, Drawable {
 protected:
 	string _text;
-	bool _shouldUpdate;
+	bool _update;
 	
 	Color _fg = Color.Black;
 	Color _bg = Color.White;
@@ -88,10 +88,10 @@ private:
 		super._setAreaSize(this._tex.width, this._tex.height);
 	}
 	
-	void _update() in {
+	void _updateText() in {
 		assert(this._tex !is null, "No Texture!");
 	} body {
-		this._shouldUpdate = false;
+		this._update = false;
 		
 		SDL_Surface* srfc;
 		scope(exit) SDL_FreeSurface(srfc);
@@ -151,8 +151,8 @@ protected:
 		
 		super._applyTranslation();
 		
-		if (this._shouldUpdate)
-			this._update();
+		if (this._update)
+			this._updateText();
 		
 		 // we need nothing to render the text, so null is given
 		this._tex._render(null);
@@ -166,7 +166,7 @@ public:
 		this.replaceFont(font);
 
 		this._text = text;
-		this._shouldUpdate = true;
+		this._update = true;
 		this._tex = new Texture();
 	}
 	
@@ -175,6 +175,10 @@ public:
 	 */
 	this(Font font, string text = null) {
 		this(font, text);
+	}
+
+	bool needRedraw() const pure nothrow {
+		return this._update;
 	}
 
 	/**
@@ -296,7 +300,7 @@ final:
 		this._font = font;
 		_FontFinalizer ~= &this._font;
 
-		this._shouldUpdate = true;
+		this._update = true;
 	}
 	
 	/**
@@ -327,7 +331,7 @@ final:
 	 * but sometimes it is usefull.
 	 */
 	void update() {
-		this._shouldUpdate = true;
+		this._update = true;
 	}
 	
 	/**
@@ -338,7 +342,7 @@ final:
 		
 		if (formated != this._text) {
 			this._text = formated;
-			this._shouldUpdate = true;
+			this._update = true;
 		}
 	}
 	
@@ -355,7 +359,7 @@ final:
 	void opCall(string text) {
 		if (text != this._text) {
 			this._text = text;
-			this._shouldUpdate = true;
+			this._update = true;
 		}
 	}
 	
@@ -393,7 +397,7 @@ final:
 	 */
 	ref Text opBinary(string op)(string text) if (op == "~" || op == "+") {
 		this._text ~= text;
-		this._shouldUpdate = true;
+		this._update = true;
 		
 		return this;
 	}
@@ -416,7 +420,7 @@ final:
 	 * Set the (foreground) color.
 	 */
 	void setColor(ref const Color col) {
-		this._shouldUpdate = true;
+		this._update = true;
 		this._fg = col;
 	}
 	
@@ -439,7 +443,7 @@ final:
 	 * Only needed if your Font.Mode is not Font.Mode.Solid.
 	 */
 	void setBackgroundColor(ref const Color col) {
-		this._shouldUpdate = true;
+		this._update = true;
 		this._bg = col;
 	}
 	
