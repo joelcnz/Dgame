@@ -280,6 +280,8 @@ final:
 	 */
 	Surface capture(Texture.Format fmt = Texture.Format.BGRA) const {
 		Surface mycapture = Surface.make(this.width, this.height);
+
+		glReadBuffer(GL_FRONT);
 		
 		ubyte* pixels = cast(ubyte*) mycapture.getPixels();
 		glReadPixels(0, 0, this.width, this.height, fmt, GL_UNSIGNED_BYTE, pixels);
@@ -340,7 +342,6 @@ final:
 	/**
 	 * Check if this window is still opened.
 	 */
-	@property
 	bool isOpen() const pure nothrow {
 		return this._window !is null;
 	}
