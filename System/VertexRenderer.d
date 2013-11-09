@@ -157,7 +157,7 @@ public:
 	 * See: pointTo
 	 */
 	static void drawArrays(Primitive.Type ptype, size_t count, size_t start = 0) {
-		glDrawArrays(ptype, start, cast(uint) count);
+		glDrawArrays(ptype, cast(uint) start, cast(uint) count);
 	}
 	
 	/**
