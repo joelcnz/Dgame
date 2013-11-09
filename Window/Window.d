@@ -389,7 +389,7 @@ final:
 	/**
 	 * Draw a Renderer on the screen.
 	 */
-	void draw(Renderer rtarget) const {
+	void draw(ref Renderer rtarget) const {
 		rtarget.present();
 	}
 	
@@ -398,16 +398,16 @@ final:
 	 * If the framerate limit is not 0, it waits for (1000 / framerate limit) milliseconds.
 	 */
 	void display() {
-		if (!this._needRedraw)
-			return;
-
-		this._needRedraw = false;
-
 		if (!this.isOpen())
 			return;
 		
 		if (this._fpsLimit != 0 && this.getVerticalSync() != Sync.Enable)
 			Clock.wait(1000 / this._fpsLimit);
+
+		if (!this._needRedraw)
+			return;
+
+		this._needRedraw = false;
 
 		if (this._style & Style.OpenGL) {
 			if (_winCount > 1)
