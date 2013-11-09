@@ -113,10 +113,12 @@ private:
 	bool _needRedraw = true;
 	static int _winCount;
 	string _title;
+
+	Drawable[] _draws;
+	uint _drawableCount;
 	
 public:
 final:
-
 	/**
 	 * CTor
 	 */
@@ -383,7 +385,10 @@ final:
 		if (draw.needRedraw())
 			this._needRedraw = true;
 
-		draw.render();
+		if (this._drawableCount < this._draws.length)
+			this._draws[this._drawableCount++] = draw;
+		else
+			this._draws ~= draw;
 	}
 	
 	/**
@@ -404,9 +409,17 @@ final:
 		if (this._fpsLimit != 0 && this.getVerticalSync() != Sync.Enable)
 			Clock.wait(1000 / this._fpsLimit);
 
+		this._drawableCount = 0;
+		
 		if (!this._needRedraw)
 			return;
 
+		foreach (Drawable d; this._draws) {
+			if (d !is null)
+				d.render();
+		}
+
+		this._draws[] = null; /// To store no garbage and to avoid confusing the GC
 		this._needRedraw = false;
 
 		if (this._style & Style.OpenGL) {
