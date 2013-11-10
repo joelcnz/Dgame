@@ -424,6 +424,7 @@ protected:
 		this._vbo.unbind();
 
 		this._update = false;
+		this._transform.taken();
 	}
 	
 private:
@@ -458,6 +459,9 @@ final:
 	}
 
 	bool needRedraw() const pure nothrow {
+		if (this._transform !is null)
+			return this._transform.needRedraw() || this._update;
+
 		return this._update;
 	}
 	

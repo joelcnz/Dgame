@@ -294,7 +294,7 @@ final:
 		ubyte[] tmpLine = Array!ubyte(&ta)[lineWidth];
 		debug writeln("Screenshot alloc: ", tmpLine.length, "::", lineWidth);
 		
-		for (uint i = 0; i < this.height / 2; ++i) {
+		for (ushort i = 0; i < this.height / 2; ++i) {
 			const uint tmpIdx1 = i * lineWidth;
 			const uint tmpIdx2 = (i + 1) * lineWidth;
 			

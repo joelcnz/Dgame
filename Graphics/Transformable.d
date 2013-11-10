@@ -43,8 +43,6 @@ private:
 	int[2] _areaSize;
 	
 protected:
-	bool _update = true;
-
 	/**
 	 * Apply translation to the object.
 	 */
@@ -70,7 +68,7 @@ package:
 		this._areaSize[0] = width;
 		this._areaSize[1] = height;
 
-		this._update = true;
+		super._update = true;
 	}
 	
 public:
@@ -83,7 +81,7 @@ public:
 		this.setRotation(0);
 		this.setScale(1);
 
-		this._update = true;
+		super._update = true;
 	}
 	
 final:
@@ -103,7 +101,7 @@ final:
 	void rotate(short rotAngle) {
 		this._rotAngle += rotAngle;
 
-		this._update = true;
+		super._update = true;
 	}
 	
 	/**
@@ -119,7 +117,7 @@ final:
 	void setScale(float zoom) {
 		this._zoom = zoom;
 
-		this._update = true;
+		super._update = true;
 	}
 	
 	/**
@@ -131,7 +129,7 @@ final:
 		
 		this._zoom += zoom;
 
-		this._update = true;
+		super._update = true;
 	}
 	
 	/**

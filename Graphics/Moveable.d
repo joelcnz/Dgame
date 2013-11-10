@@ -39,6 +39,9 @@ private:
 	Vector2f _position;
 	
 protected:
+	bool _update = true;
+
+protected:
 	/**
 	 * Overloadable method if the position is moved.
 	 */
@@ -76,6 +79,8 @@ final:
 	void setPosition(ref const Vector2f vec) {
 		this._position = vec;
 		
+		this._update = true;
+
 		this._positionReset(vec.x, vec.y);
 	}
 	
@@ -84,6 +89,8 @@ final:
 	 */
 	void setPosition(float x, float y) {
 		this._position.set(x, y);
+
+		this._update = true;
 		
 		this._positionReset(x, y);
 	}
@@ -107,6 +114,8 @@ final:
 	 */
 	void move(ref const Vector2f vec) {
 		this._position += vec;
+
+		this._update = true;
 		
 		this._positionMoved(vec.x, vec.y);
 	}
@@ -116,6 +125,8 @@ final:
 	 */
 	void move(float x, float y) {
 		this._position.move(x, y);
+
+		this._update = true;
 		
 		this._positionMoved(x, y);
 	}

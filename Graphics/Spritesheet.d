@@ -107,6 +107,8 @@ final:
 	void slideTextureRect(Grid grid = Grid.Both) in {
 		assert(this._tex !is null, "No Texture.");
 	} body {
+		super._update = true;
+
 		const short w = super._texView.width;
 		const short h = super._texView.height;
 		

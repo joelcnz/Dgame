@@ -46,6 +46,8 @@ protected:
 private:
 	void _updateAreaSize() {
 		super._setAreaSize(this._clipRect.width, this._clipRect.height);
+
+		super._update = true;
 	}
 	
 protected:

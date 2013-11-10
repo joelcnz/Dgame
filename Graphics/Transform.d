@@ -65,6 +65,14 @@ public:
 	this(const ShortRect view) {
 		this(view);
 	}
+
+	bool needRedraw() const pure nothrow {
+		return super._update;
+	}
+
+	void taken() {
+		super._update = false;
+	}
 	
 	/**
 	 * Apply the viewport. The view is recalulcated by the given View Rectangle.
@@ -96,6 +104,8 @@ public:
 		glGetIntegerv(GL_VIEWPORT, &viewport[0]);
 		
 		this._winSize[] = viewport[2 .. 4];
+
+		super._update = true;
 	}
 	
 	/**
@@ -103,6 +113,8 @@ public:
 	 */
 	void activateView(bool vActive) {
 		this._viewActive = vActive;
+		
+		super._update = true;
 	}
 	
 	/**
@@ -124,6 +136,8 @@ public:
 	 */
 	void setView(short x, short y, short w, short h) {
 		this._view.set(x, y, w, h);
+
+		super._update = true;
 	}
 	
 	/**
@@ -131,6 +145,8 @@ public:
 	 */
 	void setView(ref const ShortRect view) {
 		this._view = view;
+
+		super._update = true;
 	}
 	
 	/**
@@ -145,6 +161,8 @@ public:
 	 */
 	void resetView() {
 		this._view.collapse();
+
+		super._update = true;
 	}
 
 	/**
@@ -154,5 +172,7 @@ public:
 	 */
 	void adjustView() {
 		super.setPosition(this._view.x * -1, this._view.y * -1);
+
+		super._update = true;
 	}
 }
